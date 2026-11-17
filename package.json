@@ -1,0 +1,31 @@
+{
+  "name": "petagenda",
+  "version": "1.0.0",
+  "description": "Sistema de Gestão e Agendamento de Clínica Veterinária / Pet Shop - Projeto Final Backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "nodejs",
+    "mongodb",
+    "mongoose",
+    "express",
+    "crud",
+    "admin"
+  ],
+  "author": "Gustavo de Souza Pinto, Quellin Alvienes Marques, Mailton Torbes Kessner, Caue Morai Madruga",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.21.0",
+    "express-ejs-layouts": "^2.5.1",
+    "method-override": "^3.0.0",
+    "mongoose": "^8.7.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

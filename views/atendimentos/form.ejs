@@ -1,0 +1,70 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0">
+    <i class="bi bi-calendar-plus me-2"></i><%= title %>
+  </h1>
+  <a href="/atendimentos" class="btn btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i> Voltar
+  </a>
+</div>
+
+<div class="card border-0 shadow-sm">
+  <div class="card-body">
+    <form action="<%= action %>" method="<%= method %>">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Nome do Animal *</label>
+          <input type="text" name="animalNome" class="form-control" required value="<%= atendimento.animalNome || '' %>" placeholder="Ex: Thor">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Data e Hora *</label>
+          <% 
+            let dataValue = '';
+            if (atendimento.dataHora) {
+              const d = new Date(atendimento.dataHora);
+              dataValue = d.toISOString().slice(0, 16);
+            }
+          %>
+          <input type="datetime-local" name="dataHora" class="form-control" required value="<%= dataValue %>">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Tipo de Atendimento *</label>
+          <select name="tipo" class="form-select" required>
+            <option value="">Selecione...</option>
+            <% const tipos = ['Consulta', 'Vacina', 'Banho', 'Tosa', 'Cirurgia', 'Retorno', 'Outro']; %>
+            <% tipos.forEach(t => { %>
+              <option value="<%= t %>" <%= atendimento.tipo === t ? 'selected' : '' %>><%= t %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Status *</label>
+          <select name="status" class="form-select" required>
+            <% const statuses = [
+              { v: 'agendado', l: 'Agendado' },
+              { v: 'em_andamento', l: 'Em andamento' },
+              { v: 'concluido', l: 'Concluído' },
+              { v: 'cancelado', l: 'Cancelado' }
+            ]; %>
+            <% statuses.forEach(s => { %>
+              <option value="<%= s.v %>" <%= (atendimento.status || 'agendado') === s.v ? 'selected' : '' %>><%= s.l %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Valor (R$)</label>
+          <input type="number" name="valor" class="form-control" min="0" step="0.01" value="<%= atendimento.valor !== undefined && atendimento.valor !== null ? atendimento.valor : '' %>" placeholder="0.00">
+        </div>
+        <div class="col-12">
+          <label class="form-label">Observações</label>
+          <textarea name="observacoes" class="form-control" rows="2" placeholder="Detalhes do atendimento..."><%= atendimento.observacoes || '' %></textarea>
+        </div>
+        <div class="col-12 mt-4">
+          <button type="submit" class="btn btn-info text-white">
+            <i class="bi bi-check-lg me-1"></i> Salvar
+          </button>
+          <a href="/atendimentos" class="btn btn-light ms-2">Cancelar</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

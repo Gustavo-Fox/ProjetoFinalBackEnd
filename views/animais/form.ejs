@@ -1,0 +1,60 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0">
+    <i class="bi bi-plus-circle me-2"></i><%= title %>
+  </h1>
+  <a href="/animais" class="btn btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i> Voltar
+  </a>
+</div>
+
+<div class="card border-0 shadow-sm">
+  <div class="card-body">
+    <form action="<%= action %>" method="<%= method %>">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Nome do animal *</label>
+          <input type="text" name="nome" class="form-control" required value="<%= animal.nome || '' %>" placeholder="Ex: Thor">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Espécie *</label>
+          <select name="especie" class="form-select" required>
+            <option value="">Selecione...</option>
+            <% const especies = ['Cachorro', 'Gato', 'Ave', 'Roedor', 'Réptil', 'Outro']; %>
+            <% especies.forEach(e => { %>
+              <option value="<%= e %>" <%= animal.especie === e ? 'selected' : '' %>><%= e %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Raça</label>
+          <input type="text" name="raca" class="form-control" value="<%= animal.raca || '' %>" placeholder="Ex: Labrador">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Idade (anos)</label>
+          <input type="number" name="idade" class="form-control" min="0" value="<%= animal.idade !== undefined && animal.idade !== null ? animal.idade : '' %>" placeholder="Ex: 4">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Nome do Tutor *</label>
+          <input type="text" name="tutorNome" class="form-control" required value="<%= animal.tutorNome || '' %>" placeholder="Nome do dono do animal">
+        </div>
+        <div class="col-12">
+          <label class="form-label">Observações</label>
+          <textarea name="observacoes" class="form-control" rows="2" placeholder="Alergias, restrições, etc."><%= animal.observacoes || '' %></textarea>
+        </div>
+        <div class="col-12">
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="ativo" id="ativo"
+              <%= (animal.ativo === undefined || animal.ativo === true) ? 'checked' : '' %>>
+            <label class="form-check-label" for="ativo">Animal ativo</label>
+          </div>
+        </div>
+        <div class="col-12 mt-4">
+          <button type="submit" class="btn btn-success">
+            <i class="bi bi-check-lg me-1"></i> Salvar
+          </button>
+          <a href="/animais" class="btn btn-light ms-2">Cancelar</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

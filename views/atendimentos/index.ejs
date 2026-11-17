@@ -1,0 +1,91 @@
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+  <h1 class="h3 mb-0"><i class="bi bi-calendar-check me-2"></i>Atendimentos</h1>
+  <a href="/atendimentos/novo" class="btn btn-info text-white">
+    <i class="bi bi-plus-lg me-1"></i> Novo Atendimento
+  </a>
+</div>
+
+<div class="card border-0 shadow-sm mb-4">
+  <div class="card-body">
+    <form method="GET" action="/atendimentos" class="row g-2">
+      <div class="col-md-5">
+        <input type="text" name="q" class="form-control" placeholder="Pesquisar por animal, tipo ou observações..." value="<%= q %>">
+      </div>
+      <div class="col-md-3">
+        <select name="status" class="form-select">
+          <option value="">Todos os status</option>
+          <option value="agendado" <%= status === 'agendado' ? 'selected' : '' %>>Agendado</option>
+          <option value="em_andamento" <%= status === 'em_andamento' ? 'selected' : '' %>>Em andamento</option>
+          <option value="concluido" <%= status === 'concluido' ? 'selected' : '' %>>Concluído</option>
+          <option value="cancelado" <%= status === 'cancelado' ? 'selected' : '' %>>Cancelado</option>
+        </select>
+      </div>
+      <div class="col-md-4 d-flex gap-2">
+        <button type="submit" class="btn btn-outline-info flex-fill">
+          <i class="bi bi-search me-1"></i> Filtrar
+        </button>
+        <% if (q || status) { %>
+          <a href="/atendimentos" class="btn btn-outline-secondary">Limpar</a>
+        <% } %>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+  <div class="card-body p-0">
+    <% if (atendimentos && atendimentos.length > 0) { %>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Animal</th>
+              <th>Data/Hora</th>
+              <th>Tipo</th>
+              <th>Status</th>
+              <th>Valor</th>
+              <th class="text-end">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% atendimentos.forEach(a => { %>
+              <tr>
+                <td class="fw-medium"><%= a.animalNome %></td>
+                <td><%= a.dataHora ? new Date(a.dataHora).toLocaleString('pt-BR') : '-' %></td>
+                <td><%= a.tipo %></td>
+                <td>
+                  <% if (a.status === 'agendado') { %>
+                    <span class="badge bg-primary">Agendado</span>
+                  <% } else if (a.status === 'em_andamento') { %>
+                    <span class="badge bg-warning text-dark">Em andamento</span>
+                  <% } else if (a.status === 'concluido') { %>
+                    <span class="badge bg-success">Concluído</span>
+                  <% } else { %>
+                    <span class="badge bg-secondary">Cancelado</span>
+                  <% } %>
+                </td>
+                <td>R$ <%= (a.valor || 0).toFixed(2).replace('.', ',') %></td>
+                <td class="text-end">
+                  <a href="/atendimentos/<%= a._id %>/editar" class="btn btn-sm btn-outline-primary me-1" title="Editar">
+                    <i class="bi bi-pencil"></i>
+                  </a>
+                  <form action="/atendimentos/<%= a._id %>?_method=DELETE" method="POST" class="d-inline" onsubmit="return confirm('Tem certeza que deseja excluir este atendimento?');">
+                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Excluir">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } else { %>
+      <div class="p-5 text-center text-muted">
+        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+        Nenhum atendimento encontrado.
+        <% if (q || status) { %><br>Tente outros filtros.<% } %>
+      </div>
+    <% } %>
+  </div>
+</div>

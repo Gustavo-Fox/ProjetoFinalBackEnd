@@ -1,0 +1,80 @@
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+  <h1 class="h3 mb-0"><i class="bi bi-emoji-smile me-2"></i>Animais</h1>
+  <a href="/animais/novo" class="btn btn-success">
+    <i class="bi bi-plus-lg me-1"></i> Novo Animal
+  </a>
+</div>
+
+<div class="card border-0 shadow-sm mb-4">
+  <div class="card-body">
+    <form method="GET" action="/animais" class="row g-2">
+      <div class="col-md-8">
+        <input type="text" name="q" class="form-control" placeholder="Pesquisar por nome, espécie, raça ou tutor..." value="<%= q %>">
+      </div>
+      <div class="col-md-4 d-flex gap-2">
+        <button type="submit" class="btn btn-outline-success flex-fill">
+          <i class="bi bi-search me-1"></i> Pesquisar
+        </button>
+        <% if (q) { %>
+          <a href="/animais" class="btn btn-outline-secondary">Limpar</a>
+        <% } %>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+  <div class="card-body p-0">
+    <% if (animais && animais.length > 0) { %>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Nome</th>
+              <th>Espécie</th>
+              <th>Raça</th>
+              <th>Idade</th>
+              <th>Tutor</th>
+              <th>Status</th>
+              <th class="text-end">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% animais.forEach(a => { %>
+              <tr>
+                <td class="fw-medium"><%= a.nome %></td>
+                <td><%= a.especie %></td>
+                <td><%= a.raca || '-' %></td>
+                <td><%= a.idade !== undefined && a.idade !== null ? a.idade + ' anos' : '-' %></td>
+                <td><%= a.tutorNome %></td>
+                <td>
+                  <% if (a.ativo) { %>
+                    <span class="badge bg-success">Ativo</span>
+                  <% } else { %>
+                    <span class="badge bg-secondary">Inativo</span>
+                  <% } %>
+                </td>
+                <td class="text-end">
+                  <a href="/animais/<%= a._id %>/editar" class="btn btn-sm btn-outline-primary me-1" title="Editar">
+                    <i class="bi bi-pencil"></i>
+                  </a>
+                  <form action="/animais/<%= a._id %>?_method=DELETE" method="POST" class="d-inline" onsubmit="return confirm('Tem certeza que deseja excluir este animal?');">
+                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Excluir">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } else { %>
+      <div class="p-5 text-center text-muted">
+        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+        Nenhum animal encontrado.
+        <% if (q) { %><br>Tente outro termo de pesquisa.<% } %>
+      </div>
+    <% } %>
+  </div>
+</div>
